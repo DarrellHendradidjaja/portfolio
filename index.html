@@ -1,0 +1,865 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Darrell Hendradidjaja - Portfolio</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        :root {
+            --primary-color: #2563eb;
+            --secondary-color: #1e40af;
+            --bg-color: #f8fafc;
+            --text-color: #1e293b;
+            --card-bg: #ffffff;
+            --border-color: #e2e8f0;
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            --nav-width: 300px;
+        }
+
+        .dark-mode {
+            --primary-color: #3b82f6;
+            --secondary-color: #60a5fa;
+            --bg-color: #0f172a;
+            --text-color: #f1f5f9;
+            --card-bg: #1e293b;
+            --border-color: #334155;
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            padding: 20px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: var(--card-bg);
+            box-shadow: var(--shadow);
+            z-index: 1000;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--primary-color);
+        }
+
+        .menu-toggle {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            color: var(--text-color);
+            cursor: pointer;
+            z-index: 1001;
+        }
+
+        .nav-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 999;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s, visibility 0.3s;
+        }
+
+        .nav-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .nav-menu {
+            position: fixed;
+            top: 0;
+            right: -100%;
+            width: var(--nav-width);
+            height: 100%;
+            background-color: var(--card-bg);
+            box-shadow: -5px 0 15px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+            transition: right 0.4s ease;
+            padding: 80px 30px 30px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .nav-menu.active {
+            right: 0;
+        }
+
+        .nav-links {
+            list-style: none;
+            margin-top: 30px;
+        }
+
+        .nav-links li {
+            margin-bottom: 20px;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-color);
+            font-size: 1.2rem;
+            font-weight: 500;
+            padding: 10px 15px;
+            border-radius: 8px;
+            display: block;
+            transition: background-color 0.2s, color 0.2s;
+        }
+
+        .nav-links a:hover, .nav-links a.active {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .nav-links i {
+            margin-right: 10px;
+            width: 24px;
+            text-align: center;
+        }
+
+
+        .theme-toggle {
+            position: absolute;
+            bottom: 30px;
+            left: 30px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .theme-toggle span {
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 50px;
+            height: 24px;
+        }
+
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: .4s;
+            border-radius: 34px;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 16px;
+            width: 16px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+
+        input:checked + .slider {
+            background-color: var(--primary-color);
+        }
+
+        input:checked + .slider:before {
+            transform: translateX(26px);
+        }
+
+        main {
+            margin-top: 80px;
+            padding: 30px 0;
+        }
+
+        .page {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .about-content {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 40px;
+            align-items: center;
+        }
+
+        .profile-img-container {
+            flex: 1;
+            min-width: 300px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .profile-img {
+            width: 280px;
+            height: 280px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 5px solid var(--primary-color);
+            box-shadow: var(--shadow);
+        }
+
+        .profile-info {
+            flex: 2;
+            min-width: 300px;
+        }
+
+        .profile-info h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            color: var(--primary-color);
+        }
+
+        .profile-info h2 {
+            font-size: 1.5rem;
+            font-weight: 500;
+            margin-bottom: 20px;
+            color: var(--secondary-color);
+        }
+
+        .bio {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            margin-bottom: 20px;
+        }
+
+        .bio p {
+            margin-bottom: 15px;
+        }
+
+
+        .section-title {
+            font-size: 2rem;
+            margin-bottom: 30px;
+            color: var(--primary-color);
+            position: relative;
+            padding-bottom: 10px;
+        }
+
+        .section-title:after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 60px;
+            height: 3px;
+            background-color: var(--primary-color);
+        }
+
+        .achievement-experience-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .category {
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: var(--shadow);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .category h3 {
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            color: var(--secondary-color);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .category h3 i {
+            color: var(--primary-color);
+        }
+
+        .items-container {
+            flex: 1;
+        }
+
+        .item {
+            margin-bottom: 25px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .item:last-child {
+            margin-bottom: 0;
+            padding-bottom: 0;
+            border-bottom: none;
+        }
+
+        .item-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 10px;
+        }
+
+        .item-logo {
+            width: 50px;
+            height: 50px;
+            object-fit: contain;
+            border-radius: 8px;
+            background-color: white;
+            padding: 5px;
+        }
+
+        .item-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+
+        .item-year {
+            font-size: 0.9rem;
+            color: var(--primary-color);
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .item-desc {
+            font-size: 1rem;
+            color: var(--text-color);
+            opacity: 0.9;
+        }
+
+        .many-more-btn {
+            display: block;
+            background-color: transparent;
+            color: var(--primary-color);
+            padding: 12px 30px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 600;
+            margin: 30px auto 10px;
+            transition: all 0.2s;
+            text-align: center;
+            width: 100%;
+            max-width: 250px;
+            font-size: 1rem;
+            border: 2px solid var(--primary-color);
+            cursor: pointer;
+        }
+
+        .many-more-btn:hover {
+            background-color: var(--primary-color);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .information-content {
+            max-width: 600px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .contact-info {
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: var(--shadow);
+            margin-bottom: 30px;
+        }
+
+        .contact-info h3 {
+            font-size: 1.8rem;
+            margin-bottom: 25px;
+            color: var(--primary-color);
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 20px;
+            font-size: 1.1rem;
+        }
+
+        .contact-item i {
+            color: var(--primary-color);
+            font-size: 1.3rem;
+            width: 30px;
+        }
+
+        .thank-you {
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: var(--shadow);
+            font-style: italic;
+            font-size: 1.1rem;
+            line-height: 1.8;
+        }
+
+        .thank-you i {
+            color: var(--primary-color);
+            margin-right: 10px;
+        }
+
+        .popup-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .popup-modal.active {
+            display: flex;
+        }
+
+        .popup-content {
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            padding: 40px;
+            max-width: 400px;
+            width: 100%;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            text-align: center;
+        }
+
+        .popup-content p {
+            font-size: 1.2rem;
+            margin-bottom: 25px;
+            color: var(--text-color);
+        }
+
+        .popup-close-btn {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 10px 25px;
+            border-radius: 6px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .popup-close-btn:hover {
+            background-color: var(--secondary-color);
+        }
+
+        footer {
+            text-align: center;
+            padding: 20px;
+            margin-top: 40px;
+            border-top: 1px solid var(--border-color);
+            font-size: 0.9rem;
+            color: var(--text-color);
+            opacity: 0.8;
+        }
+
+        @media (max-width: 768px) {
+            .nav-menu {
+                width: 100%;
+            }
+            
+            .about-content {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .profile-info h1 {
+                font-size: 2rem;
+            }
+            
+            .section-title {
+                font-size: 1.8rem;
+            }
+            
+            .many-more-btn {
+                max-width: 200px;
+                padding: 12px 20px;
+            }
+            
+            .popup-content {
+                padding: 30px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="logo">Darrell H.</div>
+        <button class="menu-toggle" id="menuToggle">
+            <i class="fas fa-bars"></i>
+        </button>
+    </header>
+
+    <div class="nav-overlay" id="navOverlay"></div>
+
+    <nav class="nav-menu" id="navMenu">
+        <ul class="nav-links">
+            <li><a href="#about" class="nav-link active" data-page="about"><i class="fas fa-user"></i> About Me</a></li>
+            <li><a href="#achievement-experience" class="nav-link" data-page="achievement-experience"><i class="fas fa-trophy"></i> Achievement & Experience</a></li>
+            <li><a href="#information" class="nav-link" data-page="information"><i class="fas fa-info-circle"></i> Information</a></li>
+        </ul>
+        
+        <div class="theme-toggle">
+            <span>Dark Mode</span>
+            <label class="switch">
+                <input type="checkbox" id="themeToggle">
+                <span class="slider"></span>
+            </label>
+        </div>
+    </nav>
+
+    <div class="popup-modal" id="popupModal">
+        <div class="popup-content">
+            <p id="popupMessage">Message will appear here</p>
+            <button class="popup-close-btn" id="popupCloseBtn">Close</button>
+        </div>
+    </div>
+
+    <main class="container">
+        <section id="about" class="page active">
+            <div class="about-content">
+                <div class="profile-img-container">
+                    <img src="https://drive.google.com/thumbnail?id=1yHJ2uCqo9jNnpF6WqwtHVqHD4yakAQu7&sz=w1000" alt="Darrell Hendradidjaja" class="profile-img">
+                </div>
+                <div class="profile-info">
+                    <h1>Darrell Hendradidjaja</h1>
+                    <h2>Technology Enthusiast & Problem Solver</h2>
+                    <div class="bio">
+                        <p>I am Darrell Hendradidjaja, a passionate person in learning technology and mathematics. I am happy in discovering new concepts, making insightful questions, and exploring new skills that promote my growth in both academic and personal domains.</p>
+                        <p>I possess experience in areas like problem-solving and leadership roles. I feel happy when dealing with new challenges.</p>
+                        <p>I am enthusiastic about further sharpening my abilities, acquiring hands-on experience, and making a positive impact in my environment. I am a focused and ambitious person.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="achievement-experience" class="page">
+            <h2 class="section-title">Achievement & Experience</h2>
+            <div class="achievement-experience-content">
+                <div class="category">
+                    <h3><i class="fas fa-award"></i> Achievements</h3>
+                    <div class="items-container">
+                        <div class="item">
+                            <div class="item-year">2025</div>
+                            <div class="item-header">
+                                <img src="https://simcc.org/wp-content/uploads/2025/01/SMC-2023-LOGO.png" alt="SMC Logo" class="item-logo">
+                                <div class="item-title">Singapore Mathematics Challenge (SMC) - Outstanding Award</div>
+                            </div>
+                            <div class="item-desc">Received outstanding award in Singapore Mathematics Challenge 2025.</div>
+                        </div>
+                        
+                        <div class="item">
+                            <div class="item-year">2025</div>
+                            <div class="item-header">
+                                <img src="https://seamo-official.org/application/template/frontend/theme/images/seamo_Logo.png" alt="SEAMO Logo" class="item-logo">
+                                <div class="item-title">South-East Asian Mathematical Olympiad (SEAMO) - Silver Medal</div>
+                            </div>
+                            <div class="item-desc">Received silver medal in South-East Asian Mathematical Olympiad 2025.</div>
+                        </div>
+                        
+                        <div class="item">
+                            <div class="item-year">2025</div>
+                            <div class="item-header">
+                                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSBHt-pPA9TLi8lQcrtR1mXrivVoeBFSMdDHw&s" alt="AMC Logo" class="item-logo">
+                                <div class="item-title">Australian Mathematics Competition (AMC) - Credit Award</div>
+                            </div>
+                            <div class="item-desc">Received credit award in Australian Mathematics Competition 2025.</div>
+                        </div>
+                        
+                        <div class="item">
+                            <div class="item-year">2025</div>
+                            <div class="item-header">
+                                <img src="https://form.simcc.org/wp-content/uploads/2022/04/AMO-LOGO-flip1.png" alt="AMO Logo" class="item-logo">
+                                <div class="item-title">American Math Olympiad (AMO) - Bronze Medal</div>
+                            </div>
+                            <div class="item-desc">Received bronze medal in American Math Olympiad 2025.</div>
+                        </div>
+                        
+                        <div class="item">
+                            <div class="item-year">2024</div>
+                            <div class="item-header">
+                                <img src="https://form.simcc.org/wp-content/uploads/2023/03/SASMO-2021.png" alt="SASMO Logo" class="item-logo">
+                                <div class="item-title">Singapore & Asian Schools Math Olympiad (SASMO) - Gold Medal</div>
+                            </div>
+                            <div class="item-desc">Received gold medal in Singapore & Asian Schools Math Olympiad 2024.</div>
+                        </div>
+                        
+                        <div class="item">
+                            <div class="item-year">2024</div>
+                            <div class="item-header">
+                                <img src="https://bebras.or.id/v3/wp-content/uploads/2017/07/logo-bebrasid-2.jpg" alt="Bebras Logo" class="item-logo">
+                                <div class="item-title">Bebras Challenge - 1st Place</div>
+                            </div>
+                            <div class="item-desc">Received 1st place in Bebras Challenge 2024.</div>
+                        </div>
+                        
+                        <div class="item">
+                            <div class="item-year">2023/2024</div>
+                            <div class="item-header">
+                                <img src="https://chiuchang.org/imas/wp-content/uploads/sites/3/2017/12/cropped-logo2.x24462.png" alt="IMAS Logo" class="item-logo">
+                                <div class="item-title">International Mathematics Assessments for Schools - Distinction</div>
+                            </div>
+                            <div class="item-desc">Received distinction award in International Mathematics Assessments for Schools 2023/2024.</div>
+                        </div>
+                    </div>
+                    
+                    <button class="many-more-btn" id="manyMoreAchievements">Many More</button>
+                </div>
+                
+                <div class="category">
+                    <h3><i class="fas fa-briefcase"></i> Experience</h3>
+                    <div class="items-container">
+                        <div class="item">
+                            <div class="item-year">2024/2025</div>
+                            <div class="item-header">
+                                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ7HStYli0CZuJ3aeMEga8mECDU9caFMmv1zw&s" alt="Student Council Logo" class="item-logo">
+                                <div class="item-title">Student Council - Secretary</div>
+                            </div>
+                            <div class="item-desc">Served as Secretary of the Student Council..</div>
+                        </div>
+                        
+                        <div class="item">
+                            <div class="item-year">2023/2024</div>
+                            <div class="item-header">
+                                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ7HStYli0CZuJ3aeMEga8mECDU9caFMmv1zw&s" alt="Student Council Logo" class="item-logo">
+                                <div class="item-title">Student Council - Treasurer</div>
+                            </div>
+                            <div class="item-desc">Served as Treasurer of the student council.</div>
+                        </div>
+                        
+                        <div class="item">
+                            <div class="item-year">2023-2025</div>
+                            <div class="item-header">
+                                <img src="https://scola-uploader.scolacdn.com/upload/1f1d4639cff647f4181675de/SMPK1BARU-hitam.png" alt="SMPK 1 Logo" class="item-logo">
+                                <div class="item-title">Peer Tutoring in English, Mathematics, and Physics</div>
+                            </div>
+                            <div class="item-desc">Tutor at SMPK 1 BPK PENABUR BANDUNG.</div>
+                        </div>
+                    </div>
+                    
+                    <button class="many-more-btn" id="manyMoreExperience">Many More</button>
+                </div>
+            </div>
+        </section>
+
+        <section id="information" class="page">
+            <div class="information-content">
+                <div class="contact-info">
+                    <h3>Contact Information</h3>
+                    <div class="contact-item">
+                        <i class="fab fa-instagram"></i>
+                        <span>Instagram: @darrellh291110</span>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fas fa-envelope"></i>
+                        <span>Email: darrell291110@gmail.com</span>
+                    </div>
+                </div>
+                
+                <div class="thank-you">
+                    <p><i class="fas fa-heart"></i> Thank you for taking the time to explore my portfolio website. I appreciate your interest in my academic journey and achievements. Feel free to reach out if you would like to connect or discuss potential opportunities.</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+
+    <footer>
+        <p>&copy; 2025 Darrell Hendradidjaja. All rights reserved.</p>
+    </footer>
+
+    <script>
+        // DOM Elements
+        const menuToggle = document.getElementById('menuToggle');
+        const navMenu = document.getElementById('navMenu');
+        const navOverlay = document.getElementById('navOverlay');
+        const themeToggle = document.getElementById('themeToggle');
+        const navLinks = document.querySelectorAll('.nav-link');
+        const pages = document.querySelectorAll('.page');
+        const manyMoreAchievementsBtn = document.getElementById('manyMoreAchievements');
+        const manyMoreExperienceBtn = document.getElementById('manyMoreExperience');
+        const popupModal = document.getElementById('popupModal');
+        const popupMessage = document.getElementById('popupMessage');
+        const popupCloseBtn = document.getElementById('popupCloseBtn');
+
+        menuToggle.addEventListener('click', () => {
+            navMenu.classList.toggle('active');
+            navOverlay.classList.toggle('active');
+        });
+
+        navOverlay.addEventListener('click', () => {
+            navMenu.classList.remove('active');
+            navOverlay.classList.remove('active');
+        });
+
+        // switch page
+        navLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                
+                
+                navLinks.forEach(item => item.classList.remove('active'));
+                pages.forEach(page => page.classList.remove('active'));
+                
+                
+                link.classList.add('active');
+                
+                
+                const pageId = link.getAttribute('data-page');
+                document.getElementById(pageId).classList.add('active');
+                
+                
+                navMenu.classList.remove('active');
+                navOverlay.classList.remove('active');
+                
+                
+                window.scrollTo(0, 0);
+            });
+        });
+
+        // dark/light mode
+        themeToggle.addEventListener('change', () => {
+            if (themeToggle.checked) {
+                document.body.classList.add('dark-mode');
+                localStorage.setItem('theme', 'dark');
+            } else {
+                document.body.classList.remove('dark-mode');
+                localStorage.setItem('theme', 'light');
+            }
+        });
+
+        // save theme
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme === 'dark') {
+            document.body.classList.add('dark-mode');
+            themeToggle.checked = true;
+        }
+
+        // many more
+        manyMoreAchievementsBtn.addEventListener('click', () => {
+            showPopup("I have many more achievements.");
+        });
+        
+        manyMoreExperienceBtn.addEventListener('click', () => {
+            showPopup("I have many more experience.");
+        });
+
+        // show pop up
+        function showPopup(message) {
+            popupMessage.textContent = message;
+            popupModal.classList.add('active');
+        }
+
+        // close pop up
+        popupCloseBtn.addEventListener('click', () => {
+            popupModal.classList.remove('active');
+        });
+
+        // close pop up
+        popupModal.addEventListener('click', (e) => {
+            if (e.target === popupModal) {
+                popupModal.classList.remove('active');
+            }
+        });
+
+        // close pop up
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && popupModal.classList.contains('active')) {
+                popupModal.classList.remove('active');
+            }
+        });
+
+        // close menu
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && navMenu.classList.contains('active')) {
+                navMenu.classList.remove('active');
+                navOverlay.classList.remove('active');
+            }
+        });
+
+        // close menu
+        window.addEventListener('resize', () => {
+            if (window.innerWidth > 768 && navMenu.classList.contains('active')) {
+                navMenu.classList.remove('active');
+                navOverlay.classList.remove('active');
+            }
+        });
+
+        // error image
+        const profileImg = document.querySelector('.profile-img');
+        profileImg.addEventListener('error', function() {
+            this.src = 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=774&q=80';
+        });
+        
+        // logo error
+        const itemLogos = document.querySelectorAll('.item-logo');
+        itemLogos.forEach(logo => {
+            logo.addEventListener('error', function() {
+                // Replace broken logo with a generic icon based on context
+                const parentTitle = this.closest('.item-header').querySelector('.item-title').textContent;
+                if (parentTitle.includes('Achievement') || parentTitle.includes('Medal') || parentTitle.includes('Award') || 
+                    parentTitle.includes('Olympiad') || parentTitle.includes('Challenge')) {
+                    this.src = 'https://cdn-icons-png.flaticon.com/512/3135/3135715.png';
+                } else {
+                    this.src = 'https://cdn-icons-png.flaticon.com/512/3135/3135759.png';
+                }
+            });
+        });
+    </script>
+</body>
+</html>
